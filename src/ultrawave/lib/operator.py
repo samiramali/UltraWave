@@ -29,6 +29,10 @@ def Acoustic2DOperator(model, source=None, reciever=None, p=None):
     eq_rho_y = Eq(rho1y.forward, rho1y - dt * model.rho * vy_dy, subdomain=model.grid.subdomains['main'])
     eq_p = Eq(p.forward, model.vp * model.vp * (rho1x.forward + rho1y.forward))  # , subdomain=grid.subdomains['main'])
 
+    op = Operator([eq_v_x, eq_v_y, eq_rho_x, eq_rho_y, eq_p] + src_rhox + src_rhoy + rec_term)
+
+    
+
     alpha_max = 2 * 1540 / model.spacing[0]
 
     # Damping parameterisation
@@ -85,7 +89,8 @@ def Acoustic2DOperator(model, source=None, reciever=None, p=None):
                        eq_v_damp_top_y, eq_rho_damp_top_y,
                        eq_v_damp_base_y, eq_rho_damp_base_y] + src_rhox + src_rhoy + rec_term)
 
-    return op
+    
+    return op, p, v1x, v1y, rho1x, rho1y
 
 
 def Acoustic3DOperator(model, source=None, reciever=None):
