@@ -4,12 +4,22 @@ from devito.builtins import initialize_function
 
 def Acoustic2DOperator(model, source=None, reciever=None, p=None):
     x, y = model.grid.dimensions
+    nt = reciever.time_range.num  # or time_range.num from scene
 
-    p = p or TimeFunction(name='p', grid=model.grid, staggered=NODE, time_order=1, space_order=model.space_order)
-    v1x = TimeFunction(name='vx', grid=model.grid, time_order=1, space_order=model.space_order, staggered=x)
-    v1y = TimeFunction(name='vy', grid=model.grid, time_order=1, space_order=model.space_order, staggered=y)
-    rho1x = TimeFunction(name='rhox', grid=model.grid, staggered=NODE, time_order=1, space_order=model.space_order)
-    rho1y = TimeFunction(name='rhoy', grid=model.grid, staggered=NODE, time_order=1, space_order=model.space_order)
+    p = p or TimeFunction(name='p', grid=model.grid, staggered=NODE,
+                      time_order=1, space_order=model.space_order, save=nt)
+
+    rho1x = TimeFunction(name='rhox', grid=model.grid, staggered=NODE,
+                     time_order=1, space_order=model.space_order, save=nt)
+
+    rho1y = TimeFunction(name='rhoy', grid=model.grid, staggered=NODE,
+                     time_order=1, space_order=model.space_order, save=nt)
+
+  #  p = p or TimeFunction(name='p', grid=model.grid, staggered=NODE, time_order=1, space_order=model.space_order)
+    v1x = TimeFunction(name='vx', grid=model.grid, time_order=1, space_order=model.space_order, staggered=x, save=nt)
+    v1y = TimeFunction(name='vy', grid=model.grid, time_order=1, space_order=model.space_order, staggered=y, save=nt)
+    #rho1x = TimeFunction(name='rhox', grid=model.grid, staggered=NODE, time_order=1, space_order=model.space_order)
+    #rho1y = TimeFunction(name='rhoy', grid=model.grid, staggered=NODE, time_order=1, space_order=model.space_order)
 
     dt = model.critical_dt
     indices = np.floor(source.coordinates.data[0,:] / model.spacing).astype(int)
