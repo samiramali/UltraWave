@@ -105,15 +105,15 @@ def Acoustic2DOperator(model, source=None, reciever=None, p=None):
 
 def Acoustic3DOperator(model, source=None, reciever=None):
     x, y, z = model.grid.dimensions
+    nt = reciever.time_range.num
 
-    p = TimeFunction(name='p', grid=model.grid, staggered=NODE, time_order=1, space_order=model.space_order)
-    v1x = TimeFunction(name='vx', grid=model.grid, time_order=1, space_order=model.space_order, staggered=x)
-    v1y = TimeFunction(name='vy', grid=model.grid, time_order=1, space_order=model.space_order, staggered=y)
-    v1z = TimeFunction(name='vz', grid=model.grid, time_order=1, space_order=model.space_order, staggered=z)
-    rho1x = TimeFunction(name='rhox', grid=model.grid, staggered=NODE, time_order=1, space_order=model.space_order)
-    rho1y = TimeFunction(name='rhoy', grid=model.grid, staggered=NODE, time_order=1, space_order=model.space_order)
-    rho1z = TimeFunction(name='rhoz', grid=model.grid, staggered=NODE, time_order=1, space_order=model.space_order)
-
+    p = TimeFunction(name='p', grid=model.grid, staggered=NODE, time_order=1, space_order=model.space_order, save=nt)
+    v1x = TimeFunction(name='vx', grid=model.grid, time_order=1, space_order=model.space_order, staggered=x, save=nt)
+    v1y = TimeFunction(name='vy', grid=model.grid, time_order=1, space_order=model.space_order, staggered=y, save=nt)
+    v1z = TimeFunction(name='vz', grid=model.grid, time_order=1, space_order=model.space_order, staggered=z, save=nt)
+    rho1x = TimeFunction(name='rhox', grid=model.grid, staggered=NODE, time_order=1, space_order=model.space_order, save=nt)
+    rho1y = TimeFunction(name='rhoy', grid=model.grid, staggered=NODE, time_order=1, space_order=model.space_order, save=nt)
+    rho1z = TimeFunction(name='rhoz', grid=model.grid, staggered=NODE, time_order=1, space_order=model.space_order, save=nt)
     dt = model.critical_dt
     indices = np.floor(source.coordinates.data[0, :] / model.spacing).astype(int)
     c0 = model.vp.data[indices[0], indices[1], indices[2]]  # sound speed of the first source point
@@ -196,7 +196,16 @@ def Acoustic3DOperator(model, source=None, reciever=None):
                    eq_v_damp_top_z, eq_rho_damp_top_z,
                    eq_v_damp_base_z, eq_rho_damp_base_z]
                   + src_rhox + src_rhoy + src_rhoz + rec_term)
-    return op
+    return (
+     op,
+     p,
+     v1x,
+     v1y,
+     v1z,
+     rho1x,
+     rho1y,
+     rho1z
+    )
 
 def Elastic2DOperator(model, source=None, reciever=None):
     # No subdomain, slower than with subdomains, but stronger attenuation effect
