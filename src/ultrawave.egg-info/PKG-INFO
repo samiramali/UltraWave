@@ -10,13 +10,18 @@ Classifier: Operating System :: OS Independent
 Requires-Python: >=3.6.0
 Description-Content-Type: text/markdown
 License-File: LICENSE
-Requires-Dist: devito
+Requires-Dist: devito==4.8.6
 Dynamic: license-file
 
 # ULTRAWAVE
 
-If you’d like more details about the research behind this project, please check out my paper:
-Tian, Zixuan, Yun Jing, and Aiguo Han. "An Open-Source GPU-Based Acoustic Simulator for Fast and Accurate Modeling of Acoustic Scattering." 2024 IEEE Ultrasonics, Ferroelectrics, and Frequency Control Joint Symposium (UFFC-JS). IEEE, 2024. Link: https://ieeexplore.ieee.org/abstract/document/10793878. 
+If you’d like more details about the research behind this project, please check out our papers:
+
+[1] Z. Tian, Y. Jing, and A. Han, "UltraWave: An Open-source Multi-GPU Full-wave Simulator for Acoustic and Elastic Wave Scattering in 3-D Heterogeneous Media," IEEE Transactions on Ultrasonics, 2025. Link: https://ieeexplore.ieee.org/abstract/document/11265733.
+
+[2] Z. Tian, Y. Jing, and A. Han, "An Open-Source GPU-Based Acoustic Simulator for Fast and Accurate Modeling of Acoustic Scattering," 2024 IEEE Ultrasonics, Ferroelectrics, and Frequency Control Joint Symposium (UFFC-JS). IEEE, 2024. Link: https://ieeexplore.ieee.org/abstract/document/10793878.
+
+[3] Z. Tian, Y. Jing, and A. Han, "Accurate and Efficient Modeling of Acoustic and Elastic Absorption in Medical Ultrasound Simulations," 2025 IEEE International Ultrasonics Symposium (IUS). IEEE, 2025. Link: https://ieeexplore.ieee.org/abstract/document/11201807.
 
 ## Installation
 
@@ -59,19 +64,27 @@ To exit the environment
 
 ### Install UltraWave Toolbox
 
-To build and install the `ultrawave` package in-place, such that you can edit the files without 
-re-installing the package, run the following command at the `ultrawave` directory:
+First, you need to clone the folder by running:
 
+    git clone https://github.com/zixuant5/UltraWave.git
+
+To build and install the `ultrawave` package in-place, such that you can edit the files without 
+re-installing the package, run the following command at the `UltraWave` directory:
+
+    cd UltraWave
     pip install --upgrade pip
-    pip install . -r requirements.txt
+    pip install -r requirements.txt
+    pip install -e .
 
 For Windows users who use conda environment, if an error shows that 'pip' is not recognized, you can try:
 
     conda install pip
 
+You can run `pip show ultrawave` to check the version of ultrawave. The latest version now is **0.2.0**.
+
 ### Run Examples
 
-To run the jupyter notebook example, you can go to the `ultrawave` directory.
+To run the jupyter notebook example, you can go to the `UltraWave` directory.
 
     jupyter notebook
 
